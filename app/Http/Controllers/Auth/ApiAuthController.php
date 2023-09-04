@@ -32,7 +32,7 @@ class ApiAuthController extends Controller
             return $user->createToken($request->email)->plainTextToken;
         } catch (ValidationException $error) {
             return new JsonResponse(['error' => $error->getMessage()], Response::HTTP_BAD_REQUEST);
-        } catch (Exception $e) {
+        } catch (Exception) {
             return new JsonResponse(['error' => 'something got wrong'], Response::HTTP_BAD_REQUEST);
         }
     }
