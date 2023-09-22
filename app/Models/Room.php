@@ -11,7 +11,7 @@ class Room extends Model
     use HasFactory;
 
     protected $table = 'room';
-
+    public $timestamps = false;
     protected $guarded = [];
 
     public function reservation(): HasOne

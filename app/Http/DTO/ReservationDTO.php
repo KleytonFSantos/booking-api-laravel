@@ -10,6 +10,13 @@ class ReservationDTO
 
     private ?string $endDate = null;
 
+    public function __construct(array $booking)
+    {
+        $this->room = $booking['room'];
+        $this->startDate = $booking['start_date'];
+        $this->endDate = $booking['end_date'];
+    }
+
     public function getRoom(): ?int
     {
         return $this->room;
@@ -44,5 +51,14 @@ class ReservationDTO
         $this->endDate = $endDate;
 
         return $this;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'room' => $this->room,
+            'start_date' => $this->startDate,
+            'end_date' => $this->endDate
+        ];
     }
 }
