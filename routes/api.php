@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\ApiAuthController;
+use App\Http\Controllers\Auth\ApiRegisteredUserController;
 use App\Http\Controllers\Booking\CancelBookingAction;
 use App\Http\Controllers\Booking\CreateBookingAction;
 use App\Http\Controllers\Booking\FindByRoomAction;
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/login_check', ApiAuthController::class);
+Route::post('/register', ApiRegisteredUserController::class);
 
 Route::prefix('booking')->middleware('auth:sanctum')->group(function () {
     Route::get('/{room}', FindByRoomAction::class)->name('bookingByRoom');

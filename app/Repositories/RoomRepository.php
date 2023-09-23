@@ -2,12 +2,8 @@
 
 namespace App\Repositories;
 
-use App\Enums\StatusEnum;
-use App\Http\DTO\ReservationDTO;
-use App\Models\Reservation;
 use App\Models\Room;
-use App\Models\User;
-use Carbon\Carbon;
+
 
 class RoomRepository
 {
