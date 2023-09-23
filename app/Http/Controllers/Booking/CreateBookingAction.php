@@ -18,26 +18,37 @@ class CreateBookingAction extends Controller
         readonly private CreateBookingService $bookingService
     )
     {
-
     }
 
-    /**
-     * @throws RoomAlreadyBookedException
-     * @throws DateIsPastException
-     */
     public function __invoke(CreateBookingRequest $request, User $user): JsonResponse
     {
-        $reservation = new ReservationDTO($request->validated());
-        $getUser = $user::query()->find(1);
+        try {
+            $reservation = new ReservationDTO($request->validated());
+            $getUser = $user::query()->find(1);
 
-        $booking = $this->bookingService->createBooking(
-            user: $getUser,
-            reservationDTO: $reservation
-        );
+            $booking = $this->bookingService->createBooking(
+                user: $getUser,
+                reservationDTO: $reservation
+            );
 
-        return response()->json(
-            $booking,
-            Response::HTTP_OK,
-        );
+            return response()->json(
+                $booking,
+                Response::HTTP_OK,
+            );
+        } catch (DateIsPastException | RoomAlreadyBookedException $exception) {
+            return response()->json(
+                [
+                    'error' => $exception->getMessage()
+                ],
+                $exception->getCode(),
+            );
+        } catch (\Exception $exception) {
+            return response()->json(
+                [
+                    'error' => 'Something was wrong!'
+                ],
+                $exception->getCode(),
+            );
+        }
     }
 }

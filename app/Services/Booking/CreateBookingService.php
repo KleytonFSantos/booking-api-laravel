@@ -6,9 +6,10 @@ use App\Enums\StatusEnum;
 use App\Exceptions\DateIsPastException;
 use App\Exceptions\RoomAlreadyBookedException;
 use App\Http\DTO\ReservationDTO;
-use App\Models\Reservation;
 use App\Models\Room;
 use App\Models\User;
+use App\Repositories\ReservationRepository;
+use App\Repositories\RoomRepository;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -18,7 +19,8 @@ class CreateBookingService
 {
     public function __construct(
         private readonly Room $room,
-        private readonly Reservation $reservation
+        private readonly ReservationRepository $reservationRepository,
+        private readonly RoomRepository $roomRepository
     )
     {
     }
@@ -41,19 +43,13 @@ class CreateBookingService
 
         $reservationPrice = $this->reservationPriceCalculation($reservationDTO, $room->price);
 
-        $reservation = $this->reservation::query()
-            ->create([
-                'start_date' => Carbon::parse($reservationDTO->getStartDate()),
-                'end_date' => Carbon::parse($reservationDTO->getEndDate()),
-                'room_id' => $reservationDTO->getRoom(),
-                'user_id'=> $user->id,
-                'price' => $reservationPrice,
-                'status' => StatusEnum::RESERVED
-            ]);
+        $reservation = $this->reservationRepository->saveReservation(
+            $reservationDTO,
+            $user,
+            $reservationPrice
+        );
 
-        $room->update([
-            'vacancy' => false
-        ]);
+        $this->roomRepository->updateVacancyRoomStatus($room, false);
 
         return $reservation;
     }
