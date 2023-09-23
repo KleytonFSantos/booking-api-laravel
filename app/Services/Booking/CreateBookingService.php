@@ -54,7 +54,7 @@ class CreateBookingService
         return $reservation;
     }
 
-    public function reservationPriceCalculation(ReservationDTO $reservationDTO, int $roomPrice): string
+    public function reservationPriceCalculation(ReservationDTO $reservationDTO, int $roomPrice): int
     {
         $startDateParsed = Carbon::parse($reservationDTO->getStartDate());
 
