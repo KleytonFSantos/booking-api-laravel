@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Booking;
 use App\Http\Controllers\Controller;
 use App\Models\Reservation;
 use App\Services\Booking\FinishBookingService;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class FinishBookingAction extends Controller
@@ -13,7 +14,7 @@ class FinishBookingAction extends Controller
     {
     }
 
-    public function __invoke(Reservation $reservation)
+    public function __invoke(Reservation $reservation): JsonResponse
     {
         $this->bookingService->finish($reservation);
 
