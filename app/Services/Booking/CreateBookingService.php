@@ -6,6 +6,7 @@ use App\Enums\StatusEnum;
 use App\Exceptions\DateIsPastException;
 use App\Exceptions\RoomAlreadyBookedException;
 use App\Http\DTO\ReservationDTO;
+use App\Http\Requests\Booking\CreateBookingRequest;
 use App\Models\Room;
 use App\Models\User;
 use App\Repositories\ReservationRepository;
@@ -46,13 +47,14 @@ class CreateBookingService
             ->isPastDate($reservationDTO->getStartDate());
 
         $reservationPrice = $this->reservationPriceCalculation($reservationDTO, $room->price);
-        
+
         $fileName = $this->uploadFile->create($file);
 
         $reservation = $this->reservationRepository->saveReservation(
             $reservationDTO,
             $user,
-            $reservationPrice
+            $reservationPrice,
+            $fileName
         );
 
         $this->roomRepository->updateVacancyRoomStatus($room, false);

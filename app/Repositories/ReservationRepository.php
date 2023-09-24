@@ -18,7 +18,7 @@ class ReservationRepository
         ReservationDTO $reservationDTO,
         User $user,
         int $reservationPrice,
-        string $documentPath
+        ?string $documentPath
     ): Reservation {
         return $this->model::query()
             ->create([

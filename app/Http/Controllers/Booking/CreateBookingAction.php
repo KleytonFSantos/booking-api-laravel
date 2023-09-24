@@ -9,26 +9,23 @@ use App\Http\DTO\ReservationDTO;
 use App\Http\Requests\Booking\CreateBookingRequest;
 use App\Models\User;
 use App\Services\Booking\CreateBookingService;
+use App\Services\Document\UploadFileService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateBookingAction extends Controller
 {
     public function __construct(
-        readonly private CreateBookingService $bookingService
+        readonly private CreateBookingService $bookingService,
+        readonly private UploadFileService $fileService
     )
     {
     }
 
     public function __invoke(CreateBookingRequest $request, User $user): JsonResponse
     {
-        $hasFile = $request->hasFile('document');
+        $fileName = $this->fileService->getFileName($request);
 
-        if ($hasFile) {
-            $file = $request->file('document');
-        }
-
-        dd(1);
         try {
             $reservation = new ReservationDTO($request->validated());
             $getUser = $user::query()->find(1);
@@ -36,7 +33,7 @@ class CreateBookingAction extends Controller
             $booking = $this->bookingService->createBooking(
                 user: $getUser,
                 reservationDTO: $reservation,
-                file: $file
+                file: $fileName
             );
 
             return response()->json(
