@@ -10,9 +10,11 @@ use App\Models\Room;
 use App\Models\User;
 use App\Repositories\ReservationRepository;
 use App\Repositories\RoomRepository;
+use App\Services\Document\UploadFileService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\UploadedFile;
 
 
 class CreateBookingService
@@ -20,6 +22,7 @@ class CreateBookingService
     public function __construct(
         private readonly Room $room,
         private readonly ReservationRepository $reservationRepository,
+        readonly private UploadFileService $uploadFile,
         private readonly RoomRepository $roomRepository
     )
     {
@@ -31,7 +34,8 @@ class CreateBookingService
      */
     public function createBooking(
         ?User $user,
-        ReservationDTO $reservationDTO
+        ReservationDTO $reservationDTO,
+        ?UploadedFile $file
     ): Builder|Model
     {
 
@@ -42,6 +46,8 @@ class CreateBookingService
             ->isPastDate($reservationDTO->getStartDate());
 
         $reservationPrice = $this->reservationPriceCalculation($reservationDTO, $room->price);
+        
+        $fileName = $this->uploadFile->create($file);
 
         $reservation = $this->reservationRepository->saveReservation(
             $reservationDTO,

@@ -22,13 +22,21 @@ class CreateBookingAction extends Controller
 
     public function __invoke(CreateBookingRequest $request, User $user): JsonResponse
     {
+        $hasFile = $request->hasFile('document');
+
+        if ($hasFile) {
+            $file = $request->file('document');
+        }
+
+        dd(1);
         try {
             $reservation = new ReservationDTO($request->validated());
             $getUser = $user::query()->find(1);
 
             $booking = $this->bookingService->createBooking(
                 user: $getUser,
-                reservationDTO: $reservation
+                reservationDTO: $reservation,
+                file: $file
             );
 
             return response()->json(

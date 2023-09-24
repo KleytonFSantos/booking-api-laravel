@@ -17,18 +17,19 @@ class ReservationRepository
     public function saveReservation(
         ReservationDTO $reservationDTO,
         User $user,
-        int $reservationPrice): Reservation {
-        $reservation = $this->model::query()
+        int $reservationPrice,
+        string $documentPath
+    ): Reservation {
+        return $this->model::query()
             ->create([
                 'start_date' => Carbon::parse($reservationDTO->getStartDate()),
                 'end_date' => Carbon::parse($reservationDTO->getEndDate()),
                 'room_id' => $reservationDTO->getRoom(),
                 'user_id'=> $user->id,
                 'price' => $reservationPrice,
+                'document' => $documentPath,
                 'status' => StatusEnum::RESERVED
             ]);
-
-        return $reservation;
     }
 
     public function updateReservationStatus(Reservation $reservation, StatusEnum $status): void
