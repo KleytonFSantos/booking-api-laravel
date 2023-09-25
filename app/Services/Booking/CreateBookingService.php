@@ -36,8 +36,7 @@ class CreateBookingService
     public function createBooking(
         ReservationDTO $reservationDTO,
         ?UploadedFile $file
-    ): Builder|Model
-    {
+    ): Builder|Model {
 
         $room = $this->room::query()
             ->find($reservationDTO->getRoom());
