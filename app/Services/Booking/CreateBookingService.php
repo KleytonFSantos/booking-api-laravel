@@ -34,7 +34,6 @@ class CreateBookingService
      * @throws DateIsPastException
      */
     public function createBooking(
-        ?User $user,
         ReservationDTO $reservationDTO,
         ?UploadedFile $file
     ): Builder|Model
@@ -52,7 +51,6 @@ class CreateBookingService
 
         $reservation = $this->reservationRepository->saveReservation(
             $reservationDTO,
-            $user,
             $reservationPrice,
             $fileName
         );

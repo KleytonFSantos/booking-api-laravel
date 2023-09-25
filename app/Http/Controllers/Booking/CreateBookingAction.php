@@ -7,11 +7,12 @@ use App\Exceptions\RoomAlreadyBookedException;
 use App\Http\Controllers\Controller;
 use App\Http\DTO\ReservationDTO;
 use App\Http\Requests\Booking\CreateBookingRequest;
+use App\Http\Resources\CreateBookingResource;
 use App\Models\User;
 use App\Services\Booking\CreateBookingService;
 use App\Services\Document\UploadFileService;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 
 class CreateBookingAction extends Controller
 {
@@ -22,24 +23,19 @@ class CreateBookingAction extends Controller
     {
     }
 
-    public function __invoke(CreateBookingRequest $request, User $user): JsonResponse
+    public function __invoke(CreateBookingRequest $request): CreateBookingResource | JsonResponse
     {
         $fileName = $this->fileService->getFileName($request);
 
         try {
             $reservation = new ReservationDTO($request->validated());
-            $getUser = $user::query()->find(1);
 
             $booking = $this->bookingService->createBooking(
-                user: $getUser,
                 reservationDTO: $reservation,
                 file: $fileName
             );
 
-            return response()->json(
-                $booking,
-                Response::HTTP_OK,
-            );
+            return CreateBookingResource::make($booking);
         } catch (DateIsPastException | RoomAlreadyBookedException $exception) {
             return response()->json(
                 [

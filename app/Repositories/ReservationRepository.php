@@ -16,16 +16,17 @@ class ReservationRepository
 
     public function saveReservation(
         ReservationDTO $reservationDTO,
-        User $user,
         int $reservationPrice,
         ?string $documentPath
     ): Reservation {
         return $this->model::query()
+            ->with('room')
+            ->with('user')
             ->create([
                 'start_date' => Carbon::parse($reservationDTO->getStartDate()),
                 'end_date' => Carbon::parse($reservationDTO->getEndDate()),
                 'room_id' => $reservationDTO->getRoom(),
-                'user_id'=> $user->id,
+                'user_id'=> auth('sanctum')->user()->id,
                 'price' => $reservationPrice,
                 'document' => $documentPath,
                 'status' => StatusEnum::RESERVED
