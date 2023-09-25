@@ -11,6 +11,6 @@ interface UploadFileInterface
     public function override(?UploadedFile $file): ?string;
     public function delete(?UploadedFile $file): void;
 
-    public function getFileName(FormRequest $request): ?UploadedFile;
+    public function getFile(FormRequest $request): ?UploadedFile;
 
 }

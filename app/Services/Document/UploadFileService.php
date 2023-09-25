@@ -35,13 +35,12 @@ class UploadFileService implements UploadFileInterface
 
     }
 
-    public function getFileName(FormRequest $request): ?UploadedFile
+    public function getFile(FormRequest $request): ?UploadedFile
     {
         $hasFile = $request->hasFile('document');
 
-        if ($hasFile) {
-            return $request->file('document');
-        }
-
-        return null;    }
+        return $hasFile
+            ? $request->file('document')
+            : null;
+    }
 }
