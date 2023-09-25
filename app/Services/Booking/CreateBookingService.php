@@ -23,7 +23,7 @@ class CreateBookingService
     public function __construct(
         private readonly Room $room,
         private readonly ReservationRepository $reservationRepository,
-        readonly private UploadFileService $uploadFile,
+        private readonly UploadFileService $uploadFile,
         private readonly RoomRepository $roomRepository
     )
     {
