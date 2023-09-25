@@ -44,7 +44,11 @@ class CreateBookingService
         $this->checkBookedRoom($room)
             ->isPastDate($reservationDTO->getStartDate());
 
-        $reservationPrice = $this->reservationPriceCalculation($reservationDTO, $room->price);
+        $reservationPrice = $this->reservationPriceCalculation(
+            $reservationDTO->getStartDate(),
+            $reservationDTO->getEndDate(),
+            $room->price
+        );
 
         $fileName = $this->uploadFile->create($file);
 
@@ -59,11 +63,11 @@ class CreateBookingService
         return $reservation;
     }
 
-    public function reservationPriceCalculation(ReservationDTO $reservationDTO, int $roomPrice): int
+    public function reservationPriceCalculation($startDate, $endDate, int $roomPrice): int
     {
-        $startDateParsed = Carbon::parse($reservationDTO->getStartDate());
+        $startDateParsed = Carbon::parse($startDate);
 
-        $daysDiff = $startDateParsed->diffInDays($reservationDTO->getEndDate());
+        $daysDiff = $startDateParsed->diffInDays($endDate);
 
         return $roomPrice * $daysDiff;
     }
