@@ -14,7 +14,7 @@ class ReservationRepository
     {
     }
 
-    public function saveReservation(
+    public function save(
         ReservationDTO $reservationDTO,
         int $reservationPrice,
         ?string $documentPath

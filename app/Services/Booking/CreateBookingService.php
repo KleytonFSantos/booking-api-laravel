@@ -52,7 +52,7 @@ class CreateBookingService
 
         $fileName = $this->uploadFile->create($file);
 
-        $reservation = $this->reservationRepository->saveReservation(
+        $reservation = $this->reservationRepository->save(
             $reservationDTO,
             $reservationPrice,
             $fileName
