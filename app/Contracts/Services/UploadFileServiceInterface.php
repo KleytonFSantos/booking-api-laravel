@@ -1,16 +1,14 @@
 <?php
 
-namespace App\Services\Document;
+namespace App\Contracts\Services;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\UploadedFile;
 
-interface UploadFileInterface
+interface UploadFileServiceInterface
 {
     public function create(?UploadedFile $file): ?string;
     public function override(?UploadedFile $file): ?string;
     public function delete(?UploadedFile $file): void;
-
     public function getFile(FormRequest $request): ?UploadedFile;
-
 }

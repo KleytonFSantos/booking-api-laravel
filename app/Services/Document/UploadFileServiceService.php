@@ -2,10 +2,11 @@
 
 namespace App\Services\Document;
 
+use App\Contracts\Services\UploadFileServiceInterface;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\UploadedFile;
 
-class UploadFileService implements UploadFileInterface
+class UploadFileServiceService implements UploadFileServiceInterface
 {
     const PATH = 'C:\Users\aninh\OneDrive\Documentos\teste';
 

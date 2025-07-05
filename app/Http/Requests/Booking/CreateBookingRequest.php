@@ -16,9 +16,9 @@ class CreateBookingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'start_date' => ['string','min:8'],
-            'end_date' =>  ['string','min:8'],
-            'room' => ['integer']
+            'start_date' => ['string','min:8', 'required', 'date_format:d-m-Y H:i:s'],
+            'end_date' =>  ['string','min:8', 'required', 'date_format:d-m-Y H:i:s', 'after:start_date'],
+            'room' => ['integer', 'required'],
         ];
     }
 

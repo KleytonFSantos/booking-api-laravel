@@ -2,13 +2,13 @@
 
 namespace App\Repositories;
 
+use App\Contracts\Repositories\ReservationRepositoryInterface;
 use App\Enums\StatusEnum;
 use App\Http\DTO\ReservationDTO;
 use App\Models\Reservation;
-use App\Models\User;
 use Carbon\Carbon;
 
-class ReservationRepository
+class ReservationRepository implements ReservationRepositoryInterface
 {
     public function __construct(private readonly Reservation $model)
     {

@@ -11,7 +11,30 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(
+            'App\Contracts\Services\UploadFileServiceInterface',
+            'App\Services\Document\UploadFileServiceService'
+        );
+
+        $this->app->bind(
+            'App\Contracts\Services\CreateBookingServiceInterface',
+            'App\Services\Booking\CreateBookingService'
+        );
+
+        $this->app->bind(
+            'App\Contracts\Repositories\RoomRepositoryInterface',
+            'App\Repositories\RoomRepository'
+        );
+
+        $this->app->bind(
+            'App\Contracts\Repositories\ReservationRepositoryInterface',
+            'App\Repositories\ReservationRepository'
+        );
+
+        $this->app->bind(
+            'App\Contracts\Validator\BookingValidatorInterface',
+            'App\Validator\BookingValidator'
+        );
     }
 
     /**
